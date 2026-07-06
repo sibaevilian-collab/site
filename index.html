@@ -8,19 +8,23 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background: #ffe5ec; min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 20px; }
         .card { background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 400px; width: 100%; }
-        h1 { color: #ff4b6e; font-size: 22px; margin-bottom: 10px; }
+        h1, h2 { color: #ff4b6e; font-size: 22px; margin-bottom: 10px; }
         p { color: #4a4a4a; font-size: 15px; margin-bottom: 20px; line-height: 1.4; }
         .btn-group { display: flex; justify-content: center; gap: 15px; position: relative; height: 45px; }
-        button, .btn-link { padding: 12px 25px; font-size: 16px; font-weight: bold; border: none; border-radius: 25px; cursor: pointer; display: inline-block; text-decoration: none; }
+        button, .btn-link { padding: 12px 25px; font-size: 16px; font-weight: bold; border: none; border-radius: 25px; cursor: pointer; display: inline-block; text-decoration: none; text-align: center; }
         #yesBtn, .btn-link { background: #ff4b6e; color: white; }
         #noBtn { background: #f0f0f0; color: #666; position: absolute; left: 55%; }
+        .form-group { text-align: left; margin-bottom: 12px; }
+        label { display: block; font-size: 13px; color: #666; margin-bottom: 4px; font-weight: 600; }
+        input, select { width: 100%; padding: 10px; border: 2px solid #ffe5ec; border-radius: 10px; font-size: 14px; outline: none; }
+        input:focus, select:focus { border-color: #ff4b6e; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <!-- Экран 1 -->
+        <!-- Экран 1: Приглашение -->
         <div id="inviteScreen">
             <div style="font-size: 50px; margin-bottom: 10px;">🐱</div>
             <h1>Пойдешь со мной на свидание? ☕</h1>
@@ -31,16 +35,46 @@
             </div>
         </div>
 
-        <!-- Экран 2 -->
+        <!-- Экран 2: Выбор параметров -->
+        <div id="formScreen" class="hidden">
+            <h2>Давай спланируем 🥰</h2>
+            <p>Выбери параметры, а я всё организую:</p>
+            <div class="form-group">
+                <label>Когда тебе удобно?</label>
+                <input type="date" id="dateInput">
+            </div>
+            <div class="form-group">
+                <label>Во сколько?</label>
+                <input type="time" id="timeInput">
+            </div>
+            <div class="form-group">
+                <label>Куда пойдем?</label>
+                <select id="activityInput">
+                    <option value="В кино 🍿">В кино 🍿</option>
+                    <option value="Прогулка 🌳">Просто гулять 🌳</option>
+                    <option value="Выставка 🎨">На выставку 🎨</option>
+                    <option value="Сюрприз ✨">Пусть будет сюрприз! ✨</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Что бы ты хотела поесть?</label>
+                <input type="text" id="foodInput" placeholder="Суши, пицца, паста...">
+            </div>
+            <button id="yesBtn" style="width: 100%; margin-top: 10px;" onclick="generateSmsLink()">Подтвердить план ✨</button>
+        </div>
+
+        <!-- Экран 3: Финал с отправкой СМС -->
         <div id="successScreen" class="hidden">
-            <h2>Ура! 🎉</h2>
-            <p>Нажми на кнопку ниже, чтобы открыть Telegram и подтвердить встречу:</p>
-            <!-- Официальная и самая надежная ссылка -->
-            <a class="btn-link" href="https://t.me" target="_blank">Открыть Telegram 🚀</a>
+            <h2>Почти готово! 🎉</h2>
+            <p>Нажми на кнопку ниже, чтобы отправить этот план мне по СМС:</p>
+            <a id="smsLink" class="btn-link" style="width: 100%;" href="#">Отправить СМС ✉️</a>
         </div>
     </div>
 
     <script>
+        // Ваш номер телефона жестко прописан внутри системы
+        const MY_PHONE_NUMBER = '79006536998'; 
+
         const noBtn = document.getElementById('noBtn');
 
         function moveButton() {
@@ -51,6 +85,27 @@
 
         function showForm() {
             document.getElementById('inviteScreen').classList.add('hidden');
+            document.getElementById('formScreen').classList.remove('hidden');
+            document.getElementById('dateInput').valueAsDate = new Date();
+        }
+
+        function generateSmsLink() {
+            const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+            const activity = document.getElementById('activityInput').value;
+            const food = document.getElementById('foodInput').value || 'Выберем вместе';
+
+            // Формируем текст СМС сообщения
+            const text = 'Привет! Я согласна на свидание! 🥰\n🗓 Дата: ' + date + '\n🕒 Время: ' + time + '\n📍 Куда идем: ' + activity + '\n🍕 Покушать: ' + food;
+            const encodedText = encodeURIComponent(text);
+
+            // Кроссплатформенный формат ссылки СМС
+            const isApple = /iPod|iPad|iPhone/.test(navigator.userAgent);
+            const separator = isApple ? '&' : '?';
+            
+            document.getElementById('smsLink').href = 'sms:' + MY_PHONE_NUMBER + separator + 'body=' + encodedText;
+
+            document.getElementById('formScreen').classList.add('hidden');
             document.getElementById('successScreen').classList.remove('hidden');
         }
     </script>
