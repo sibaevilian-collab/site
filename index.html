@@ -24,7 +24,7 @@
 <body>
 
     <div class="card">
-        <!-- Экран 1: Приглашение -->
+        <!-- Экран 1: Главный вопрос -->
         <div id="inviteScreen">
             <div style="font-size: 50px; margin-bottom: 10px;">🐱</div>
             <h1>Пойдешь со мной на свидание? ☕</h1>
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <!-- Экран 2: Выбор параметров -->
+        <!-- Экран 2: Выбор параметров встречи -->
         <div id="formScreen" class="hidden">
             <h2>Давай спланируем 🥰</h2>
             <p>Выбери параметры, а я всё организую:</p>
@@ -44,11 +44,11 @@
                 <input type="date" id="dateInput">
             </div>
             <div class="form-group">
-                <label>Во сколько?</label>
+                <label>Во сколько встретимся?</label>
                 <input type="time" id="timeInput">
             </div>
             <div class="form-group">
-                <label>Куда пойдем?</label>
+                <label>Куда мы пойдем?</label>
                 <select id="activityInput">
                     <option value="В кино 🍿">В кино 🍿</option>
                     <option value="Прогулка 🌳">Просто гулять 🌳</option>
@@ -58,12 +58,12 @@
             </div>
             <div class="form-group">
                 <label>Что бы ты хотела поесть?</label>
-                <input type="text" id="foodInput" placeholder="Суши, пицца, паста...">
+                <input type="text" id="foodInput" placeholder="Суши, пицца, паста, бургеры...">
             </div>
             <button id="yesBtn" style="width: 100%; margin-top: 10px;" onclick="generateSmsLink()">Подтвердить план ✨</button>
         </div>
 
-        <!-- Экран 3: Финал с отправкой СМС -->
+        <!-- Экран 3: Финал с прямой отправкой СМС -->
         <div id="successScreen" class="hidden">
             <h2>Почти готово! 🎉</h2>
             <p>Нажми на кнопку ниже, чтобы отправить этот план мне по СМС:</p>
@@ -72,7 +72,7 @@
     </div>
 
     <script>
-        // Ваш номер телефона жестко прописан внутри системы
+        // Вшит ваш номер телефона в международном формате без плюса
         const MY_PHONE_NUMBER = '79006536998'; 
 
         const noBtn = document.getElementById('noBtn');
@@ -95,11 +95,11 @@
             const activity = document.getElementById('activityInput').value;
             const food = document.getElementById('foodInput').value || 'Выберем вместе';
 
-            // Формируем текст СМС сообщения
+            // Формируем текст СМС сообщения для вас
             const text = 'Привет! Я согласна на свидание! 🥰\n🗓 Дата: ' + date + '\n🕒 Время: ' + time + '\n📍 Куда идем: ' + activity + '\n🍕 Покушать: ' + food;
             const encodedText = encodeURIComponent(text);
 
-            // Кроссплатформенный формат ссылки СМС
+            // Кроссплатформенный формат СМС для правильного открытия на iOS и Android
             const isApple = /iPod|iPad|iPhone/.test(navigator.userAgent);
             const separator = isApple ? '&' : '?';
             
