@@ -3,96 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>У меня есть к тебе вопрос... ✨</title>
+    <title>У меня к тебе вопрос... ✨</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 20px; overflow-x: hidden; }
-        .card { background: white; padding: 40px 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(255, 75, 110, 0.15); max-width: 450px; width: 100%; position: relative; }
-        .gif-container img { width: 120px; height: 120px; margin-bottom: 20px; border-radius: 50%; object-fit: cover; background: #ffe5ec; }
-        h1, h2 { color: #ff4b6e; font-size: 24px; margin-bottom: 15px; }
-        p { color: #4a4a4a; font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
-        .btn-group { display: flex; justify-content: center; gap: 20px; position: relative; height: 50px; margin-top: 20px; }
-        button { padding: 12px 35px; font-size: 18px; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; transition: all 0.2s ease; }
-        #yesBtn { background-color: #ff4b6e; color: white; box-shadow: 0 4px 15px rgba(255, 75, 110, 0.4); }
-        #yesBtn:hover { background-color: #e03154; transform: scale(1.03); }
-        #noBtn { background-color: #f0f0f0; color: #666; position: absolute; left: 55%; will-change: transform; }
-        .form-group { text-align: left; margin-bottom: 15px; }
-        label { display: block; font-size: 14px; color: #666; margin-bottom: 5px; font-weight: 600; }
-        input, select { width: 100%; padding: 12px 15px; border: 2px solid #ffe5ec; border-radius: 12px; font-size: 15px; color: #4a4a4a; outline: none; -webkit-appearance: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: #ffe5ec; min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        .card { background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 400px; width: 100%; }
+        h1, h2 { color: #ff4b6e; font-size: 22px; margin-bottom: 10px; }
+        p { color: #4a4a4a; font-size: 15px; margin-bottom: 20px; line-height: 1.4; }
+        .btn-group { display: flex; justify-content: center; gap: 15px; position: relative; height: 45px; }
+        button, .btn-link { padding: 12px 25px; font-size: 16px; font-weight: bold; border: none; border-radius: 25px; cursor: pointer; display: inline-block; text-decoration: none; }
+        #yesBtn, .btn-link { background: #ff4b6e; color: white; }
+        #noBtn { background: #f0f0f0; color: #666; position: absolute; left: 55%; }
+        .form-group { text-align: left; margin-bottom: 12px; }
+        label { display: block; font-size: 13px; color: #666; margin-bottom: 4px; font-weight: 600; }
+        input, select { width: 100%; padding: 10px; border: 2px solid #ffe5ec; border-radius: 10px; font-size: 14px; outline: none; }
         input:focus, select:focus { border-color: #ff4b6e; }
-        #submitBtn { background-color: #2ec4b6; color: white; width: 100%; margin-top: 15px; box-shadow: 0 4px 15px rgba(46, 196, 182, 0.3); }
         .hidden { display: none; }
-        /* Легкие встроенные конфетти */
-        .confetti-piece { position: fixed; width: 10px; height: 10px; background-color: #ff4b6e; top: -10px; border-radius: 50%; animation: fall 3s linear infinite; z-index: 999; }
-        @keyframes fall {
-            0% { top: -10px; transform: translateX(0) rotate(0deg); }
-            100% { top: 100vh; transform: translateX(100px) rotate(360deg); }
-        }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <!-- Экран 1: Приглашение -->
+        <!-- Экран 1 -->
         <div id="inviteScreen">
-            <div class="gif-container">
-                <!-- Статичная картинка-заглушка, которая грузится мгновенно -->
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><text y='.9em' font-size='70'>🐱</text></svg>" alt="Cute cat">
-            </div>
-            <h1>Пойдешь со мной на свидание? ☕✨</h1>
-            <p>Я обещаю отличный вечер и классное настроение! Выберем то, что тебе по душе.</p>
+            <div style="font-size: 50px; margin-bottom: 10px;">🐱</div>
+            <h1>Пойдешь со мной на свидание? ☕</h1>
+            <p>Обещаю отличный вечер и классное настроение!</p>
             <div class="btn-group">
                 <button id="yesBtn" onclick="showForm()">Да! ❤️</button>
                 <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Нет 😢</button>
             </div>
         </div>
 
-        <!-- Экран 2: Выбор параметров -->
+        <!-- Экран 2 -->
         <div id="formScreen" class="hidden">
-            <h2>Ура! Давай спланируем 🥰</h2>
-            <p>Выбери, как мы проведем время, а я всё организую:</p>
-            
+            <h2>Давай спланируем 🥰</h2>
+            <p>Выбери параметры, а я всё организую:</p>
             <div class="form-group">
                 <label>Когда тебе удобно?</label>
                 <input type="date" id="dateInput">
             </div>
+            <div class="form-group"><label>Во сколько?</label><input type="time" id="timeInput"></div>
             <div class="form-group">
-                <label>Во сколько встретимся?</label>
-                <input type="time" id="timeInput">
-            </div>
-            <div class="form-group">
-                <label>Куда мы пойдем?</label>
+                <label>Куда пойдем?</label>
                 <select id="activityInput">
-                    <option value="В кино на классный фильм">В кино 🍿</option>
-                    <option value="Прогулка по красивым местам">Просто гулять 🌳</option>
-                    <option value="На интересную выставку / музей">На выставку или музей 🎨</option>
-                    <option value="Устроим сюрприз (выберешь ты)">Пусть будет сюрприз! ✨</option>
+                    <option value="В кино 🍿">В кино 🍿</option>
+                    <option value="Прогулка 🌳">Просто гулять 🌳</option>
+                    <option value="Выставка 🎨">На выставку 🎨</option>
+                    <option value="Сюрприз ✨">Пусть будет сюрприз! ✨</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>Что бы ты хотела поесть?</label>
-                <input type="text" id="foodInput" placeholder="Суши, пицца, паста, бургеры...">
-            </div>
-
-            <button id="submitBtn" onclick="sendResponse()">Отправить ответ 🚀</button>
+            <div class="form-group"><label>Что бы ты хотела поесть?</label><input type="text" id="foodInput" placeholder="Суши, пицца, паста..."></div>
+            <button id="yesBtn" style="width: 100%; margin-top: 10px;" onclick="generateTelegramLink()">Подтвердить план ✨</button>
         </div>
 
-        <!-- Экран 3: Финал -->
+        <!-- Экран 3 -->
         <div id="successScreen" class="hidden">
-            <h2>Всё готово! 🎉</h2>
-            <p>Я получил твой ответ и уже бегу всё бронировать. До скорой встречи! Целую 😘</p>
+            <h2>Почти готово! 🎉</h2>
+            <p>Нажми кнопку ниже, чтобы отправить этот план мне в Telegram:</p>
+            <a id="tgLink" class="btn-link" href="#" target="_blank">Отправить ответ в ТГ 🚀</a>
         </div>
     </div>
 
     <script>
-        const TELEGRAM_BOT_TOKEN = '8978013188:AAE-Pty-mGwevKikOHf3xnX6Wxsvyx3ERgg'; 
-        const TELEGRAM_CHAT_ID = '8434509431'; 
-
         const noBtn = document.getElementById('noBtn');
 
         function moveButton() {
-            const x = (Math.random() - 0.5) * 200;
-            const y = (Math.random() - 0.5) * 100;
+            const x = (Math.random() - 0.5) * 160;
+            const y = (Math.random() - 0.5) * 80;
             if (noBtn) noBtn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
@@ -102,42 +80,20 @@
             document.getElementById('dateInput').valueAsDate = new Date();
         }
 
-        function sendResponse() {
+        function generateTelegramLink() {
             const date = document.getElementById('dateInput').value;
             const time = document.getElementById('timeInput').value;
             const activity = document.getElementById('activityInput').value;
-            const food = document.getElementById('foodInput').value || 'Не важно / Выберем вместе';
+            const food = document.getElementById('foodInput').value || 'Выберем вместе';
 
-            const message = `🔔 *Новый ответ от любимой!* 💖\n\n🗓 *Дата:* ${date}\n🕒 *Время:* ${time}\n📍 *Куда идем:* ${activity}\n🍕 *Что хочет поесть:* ${food}`;
-            const encodedText = encodeURIComponent(message);
+            // Текст, который автоматически вставится у неё в поле ввода
+            const text = `Привет! Я согласна на свидание! 🥰%0A🗓 Дата: ${date}%0A🕒 Время: ${time}%0A📍 Куда идем: ${activity}%0A🍕 Покушать: ${food}`;
             
-            // Самый чистый и прямой метод отправки через встроенный фоновый запрос браузера
-            const url = `https://allorigins.win{encodeURIComponent('https://telegram.org' + TELEGRAM_BOT_TOKEN + '/sendMessage?chat_id=' + TELEGRAM_CHAT_ID + '&text=' + encodedText + '&parse_mode=Markdown')}`;
-            
-            fetch(url).then(() => {
-                showSuccess();
-            }).catch(() => {
-                showSuccess(); // В случае микросбоев сети всё равно пускаем на финальный экран
-            });
-        }
+            // Ссылка открывает чат с вашим ботом и готовит текст к отправке
+            document.getElementById('tgLink').href = `https://t.me{text}`;
 
-        function showSuccess() {
             document.getElementById('formScreen').classList.add('hidden');
             document.getElementById('successScreen').classList.remove('hidden');
-            createConfetti();
-        }
-
-        function createConfetti() {
-            const colors = ['#ff4b6e', '#ffc2d1', '#2ec4b6', '#fff'];
-            for (let i = 0; i < 50; i++) {
-                const p = document.createElement('div');
-                p.className = 'confetti-piece';
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.delay = Math.random() * 2 + 's';
-                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                p.style.width = p.style.height = Math.random() * 8 + 5 + 'px';
-                document.body.appendChild(p);
-            }
         }
     </script>
 </body>
