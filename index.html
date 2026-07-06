@@ -8,7 +8,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background: #ffe5ec; min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 20px; }
         .card { background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 400px; width: 100%; }
-        h1 { color: #ff4b6e; font-size: 22px; margin-bottom: 10px; }
+        h1, h2 { color: #ff4b6e; font-size: 22px; margin-bottom: 10px; }
         p { color: #4a4a4a; font-size: 15px; margin-bottom: 20px; line-height: 1.4; }
         .form-group { text-align: left; margin-bottom: 12px; }
         label { display: block; font-size: 13px; color: #666; margin-bottom: 4px; font-weight: 600; }
@@ -22,9 +22,9 @@
     <div class="card">
         <div style="font-size: 50px; margin-bottom: 10px;">🐱</div>
         <h1>Давай спланируем свидание? 🥰</h1>
-        <p>Выбери параметры встречи, которые тебе удобны, и отправь мне в Telegram:</p>
+        <p>Выбери параметры встречи, которые тебе удобны, и отправь мне СМС:</p>
         
-        <!-- Поля выбора ответов -->
+        <!-- Все поля выбора открыты сразу и видны на любом телефоне -->
         <div class="form-group">
             <label>Когда тебе удобно?</label>
             <input type="date" id="dateInput">
@@ -46,30 +46,37 @@
         </div>
         
         <div class="form-group">
-            <label>What бы ты хотела поесть?</label>
+            <label>Что бы ты хотела поесть?</label>
             <input type="text" id="foodInput" placeholder="Суши, пицца, паста, бургеры...">
         </div>
 
-        <!-- Кнопка отправки в Telegram -->
-        <a id="tgShareLink" class="btn-link" href="#" onclick="generateTelegramShareLink(event)" target="_blank">Отправить ответ мне в Telegram 🚀</a>
+        <!-- Кнопка СМС -->
+        <a id="smsLink" class="btn-link" href="#" onclick="generateSmsLink(event)">Отправить СМС мне на телефон ✉️</a>
     </div>
 
     <script>
+        // Ваш номер телефона
+        const MY_PHONE_NUMBER = '79006536998'; 
+
         // Автоматически ставим текущую дату в поле при загрузке
         document.getElementById('dateInput').valueAsDate = new Date();
 
-        function generateTelegramShareLink(e) {
+        function generateSmsLink(e) {
             const date = document.getElementById('dateInput').value;
             const time = document.getElementById('timeInput').value;
             const activity = document.getElementById('activityInput').value;
             const food = document.getElementById('foodInput').value || 'Выберем вместе';
 
-            // Формируем красивый текст со всеми заполненными параметрами
+            // Собираем текст СМС
             const text = 'Привет! Я согласна на свидание! 🥰\n🗓 Дата: ' + date + '\n🕒 Время: ' + time + '\n📍 Куда идем: ' + activity + '\n🍕 Покушать: ' + food;
             const encodedText = encodeURIComponent(text);
 
-            // Используем официальный шлюз "Поделиться", который открывает приложение и вставляет заготовленный текст
-            document.getElementById('tgShareLink').href = 'https://t.me' + encodedText;
+            // Настройка под разные операционные системы (iOS / Android)
+            const isApple = /iPod|iPad|iPhone/.test(navigator.userAgent);
+            const separator = isApple ? '&' : '?';
+            
+            // Устанавливаем готовую ссылку на кнопку
+            document.getElementById('smsLink').href = 'sms:' + MY_PHONE_NUMBER + separator + 'body=' + encodedText;
         }
     </script>
 </body>
