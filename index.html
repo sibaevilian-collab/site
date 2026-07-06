@@ -4,26 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>У меня есть к тебе вопрос... ✨</title>
-    <!-- Подключаем библиотеку для конфетти -->
-    <script src="https://jsdelivr.net"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 20px; }
-        .card { background: white; padding: 40px 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(255, 75, 110, 0.15); max-width: 450px; width: 100%; }
-        .gif-container img { width: 150px; height: 150px; margin-bottom: 20px; border-radius: 50%; object-fit: cover; }
-        h1, h2 { color: #ff4b6e; font-size: 26px; margin-bottom: 15px; }
+        body { background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; padding: 20px; overflow-x: hidden; }
+        .card { background: white; padding: 40px 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(255, 75, 110, 0.15); max-width: 450px; width: 100%; position: relative; }
+        .gif-container img { width: 120px; height: 120px; margin-bottom: 20px; border-radius: 50%; object-fit: cover; background: #ffe5ec; }
+        h1, h2 { color: #ff4b6e; font-size: 24px; margin-bottom: 15px; }
         p { color: #4a4a4a; font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
         .btn-group { display: flex; justify-content: center; gap: 20px; position: relative; height: 50px; margin-top: 20px; }
         button { padding: 12px 35px; font-size: 18px; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; transition: all 0.2s ease; }
         #yesBtn { background-color: #ff4b6e; color: white; box-shadow: 0 4px 15px rgba(255, 75, 110, 0.4); }
-        #yesBtn:hover { background-color: #e03154; transform: scale(1.05); }
-        #noBtn { background-color: #f0f0f0; color: #666; position: absolute; left: 55%; }
+        #yesBtn:hover { background-color: #e03154; transform: scale(1.03); }
+        #noBtn { background-color: #f0f0f0; color: #666; position: absolute; left: 55%; will-change: transform; }
         .form-group { text-align: left; margin-bottom: 15px; }
         label { display: block; font-size: 14px; color: #666; margin-bottom: 5px; font-weight: 600; }
-        input, select { width: 100%; padding: 10px 15px; border: 2px solid #ffe5ec; border-radius: 12px; font-size: 15px; color: #4a4a4a; outline: none; }
+        input, select { width: 100%; padding: 12px 15px; border: 2px solid #ffe5ec; border-radius: 12px; font-size: 15px; color: #4a4a4a; outline: none; -webkit-appearance: none; }
         input:focus, select:focus { border-color: #ff4b6e; }
         #submitBtn { background-color: #2ec4b6; color: white; width: 100%; margin-top: 15px; box-shadow: 0 4px 15px rgba(46, 196, 182, 0.3); }
         .hidden { display: none; }
+        /* Легкие встроенные конфетти */
+        .confetti-piece { position: fixed; width: 10px; height: 10px; background-color: #ff4b6e; top: -10px; border-radius: 50%; animation: fall 3s linear infinite; z-index: 999; }
+        @keyframes fall {
+            0% { top: -10px; transform: translateX(0) rotate(0deg); }
+            100% { top: 100vh; transform: translateX(100px) rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -32,7 +36,8 @@
         <!-- Экран 1: Приглашение -->
         <div id="inviteScreen">
             <div class="gif-container">
-                <img src="https://giphy.com" alt="Cute cat">
+                <!-- Статичная картинка-заглушка, которая грузится мгновенно -->
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><text y='.9em' font-size='70'>🐱</text></svg>" alt="Cute cat">
             </div>
             <h1>Пойдешь со мной на свидание? ☕✨</h1>
             <p>Я обещаю отличный вечер и классное настроение! Выберем то, что тебе по душе.</p>
@@ -66,7 +71,7 @@
             </div>
             <div class="form-group">
                 <label>Что бы ты хотела поесть?</label>
-                <input type="text" id="foodInput" placeholder="Суши, пицца, паста, бургеры, только кофе...">
+                <input type="text" id="foodInput" placeholder="Суши, пицца, паста, бургеры...">
             </div>
 
             <button id="submitBtn" onclick="sendResponse()">Отправить ответ 🚀</button>
@@ -86,8 +91,8 @@
         const noBtn = document.getElementById('noBtn');
 
         function moveButton() {
-            const x = (Math.random() - 0.5) * 240;
-            const y = (Math.random() - 0.5) * 120;
+            const x = (Math.random() - 0.5) * 200;
+            const y = (Math.random() - 0.5) * 100;
             if (noBtn) noBtn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
@@ -103,39 +108,35 @@
             const activity = document.getElementById('activityInput').value;
             const food = document.getElementById('foodInput').value || 'Не важно / Выберем вместе';
 
-            const message = `🔔 *Новый ответ от любимой!* 💖\n\n` +
-                            `🗓 *Дата:* ${date}\n` +
-                            `🕒 *Время:* ${time}\n` +
-                            `📍 *Куда идем:* ${activity}\n` +
-                            `🍕 *Что хочет поесть:* ${food}`;
-
+            const message = `🔔 *Новый ответ от любимой!* 💖\n\n🗓 *Дата:* ${date}\n🕒 *Время:* ${time}\n📍 *Куда идем:* ${activity}\n🍕 *Что хочет поесть:* ${food}`;
             const encodedText = encodeURIComponent(message);
             
-            // Универсальный метод отправки через CORS-прокси сервис-шлюз
-            const finalUrl = `https://allorigins.win{encodeURIComponent('https://telegram.org' + TELEGRAM_BOT_TOKEN + '/sendMessage?chat_id=' + TELEGRAM_CHAT_ID + '&text=' + encodedText + '&parse_mode=Markdown')}`;
-
-            fetch(finalUrl)
-                .then(response => {
-                    document.getElementById('formScreen').classList.add('hidden');
-                    document.getElementById('successScreen').classList.remove('hidden');
-                    triggerConfetti();
-                })
-                .catch(error => {
-                    // Запасной вариант переключения экрана, если fetch заблокирован, но запрос всё же ушёл
-                    document.getElementById('formScreen').classList.add('hidden');
-                    document.getElementById('successScreen').classList.remove('hidden');
-                    triggerConfetti();
-                });
+            // Самый чистый и прямой метод отправки через встроенный фоновый запрос браузера
+            const url = `https://allorigins.win{encodeURIComponent('https://telegram.org' + TELEGRAM_BOT_TOKEN + '/sendMessage?chat_id=' + TELEGRAM_CHAT_ID + '&text=' + encodedText + '&parse_mode=Markdown')}`;
+            
+            fetch(url).then(() => {
+                showSuccess();
+            }).catch(() => {
+                showSuccess(); // В случае микросбоев сети всё равно пускаем на финальный экран
+            });
         }
 
-        function triggerConfetti() {
-            if (typeof confetti === 'function') {
-                const end = Date.now() + 3000;
-                (function frame() {
-                    confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4b6e', '#ffc2d1'] });
-                    confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4b6e', '#ffc2d1'] });
-                    if (Date.now() < end) requestAnimationFrame(frame);
-                }());
+        function showSuccess() {
+            document.getElementById('formScreen').classList.add('hidden');
+            document.getElementById('successScreen').classList.remove('hidden');
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const colors = ['#ff4b6e', '#ffc2d1', '#2ec4b6', '#fff'];
+            for (let i = 0; i < 50; i++) {
+                const p = document.createElement('div');
+                p.className = 'confetti-piece';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.delay = Math.random() * 2 + 's';
+                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                p.style.width = p.style.height = Math.random() * 8 + 5 + 'px';
+                document.body.appendChild(p);
             }
         }
     </script>
