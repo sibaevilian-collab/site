@@ -71,7 +71,7 @@
         function moveButton() {
             const x = (Math.random() - 0.5) * 160;
             const y = (Math.random() - 0.5) * 80;
-            if (noBtn) noBtn.style.transform = `translate(${x}px, ${y}px)`;
+            if (noBtn) noBtn.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
         }
 
         function showForm() {
@@ -86,11 +86,12 @@
             const activity = document.getElementById('activityInput').value;
             const food = document.getElementById('foodInput').value || 'Выберем вместе';
 
-            // Формируем текст
-            const text = `Привет! Я согласна на свидание! 🥰%0A🗓 Дата: ${date}%0A🕒 Время: ${time}%0A📍 Куда идем: ${activity}%0A🍕 Покушать: ${food}`;
+            // Формируем текст ответа без капризных символов
+            const text = 'Привет! Я согласна на свидание! 🥰\n🗓 Дата: ' + date + '\n🕒 Время: ' + time + '\n📍 Куда идем: ' + activity + '\n🍕 Покушать: ' + food;
             
-            // Вставил имя вашего бота Svidbot_Bot
-            document.getElementById('tgLink').href = `https://t.me{text}`;
+            // Надежная склейка ссылки для любого браузера
+            const encodedText = encodeURIComponent(text);
+            document.getElementById('tgLink').href = 'https://t.me' + encodedText;
 
             document.getElementById('formScreen').classList.add('hidden');
             document.getElementById('successScreen').classList.remove('hidden');
