@@ -86,10 +86,10 @@
             const activity = document.getElementById('activityInput').value;
             const food = document.getElementById('foodInput').value || 'Выберем вместе';
 
-            // Текст, который автоматически вставится у неё в поле ввода
+            // Формируем текст
             const text = `Привет! Я согласна на свидание! 🥰%0A🗓 Дата: ${date}%0A🕒 Время: ${time}%0A📍 Куда идем: ${activity}%0A🍕 Покушать: ${food}`;
             
-            // Ссылка открывает чат с вашим ботом и готовит текст к отправке
+            // Вставил имя вашего бота Svidbot_Bot
             document.getElementById('tgLink').href = `https://t.me{text}`;
 
             document.getElementById('formScreen').classList.add('hidden');
