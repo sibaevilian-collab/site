@@ -72,7 +72,7 @@
     </div>
 
     <script>
-        // Вшит ваш номер телефона в международном формате без плюса
+        // Вшит ваш номер телефона в международном формате
         const MY_PHONE_NUMBER = '79006536998'; 
 
         const noBtn = document.getElementById('noBtn');
@@ -95,14 +95,17 @@
             const activity = document.getElementById('activityInput').value;
             const food = document.getElementById('foodInput').value || 'Выберем вместе';
 
-            // Формируем текст СМС сообщения для вас
+            // Текст СМС сообщения
             const text = 'Привет! Я согласна на свидание! 🥰\n🗓 Дата: ' + date + '\n🕒 Время: ' + time + '\n📍 Куда идем: ' + activity + '\n🍕 Покушать: ' + food;
+            
+            // Кодируем текст для безопасной отправки через СМС-ссылку
             const encodedText = encodeURIComponent(text);
 
-            // Кроссплатформенный формат СМС для правильного открытия на iOS и Android
+            // Кроссплатформенный формат СМС под Айфон и Андроид
             const isApple = /iPod|iPad|iPhone/.test(navigator.userAgent);
             const separator = isApple ? '&' : '?';
             
+            // Формируем чистую ссылку для СМС-приложения
             document.getElementById('smsLink').href = 'sms:' + MY_PHONE_NUMBER + separator + 'body=' + encodedText;
 
             document.getElementById('formScreen').classList.add('hidden');
